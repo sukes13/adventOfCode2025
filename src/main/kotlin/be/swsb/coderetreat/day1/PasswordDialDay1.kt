@@ -30,7 +30,7 @@ sealed class Turning(val numberOfTurns: Int) {
         override fun invoke(startAt: Int): Pair<Int,Int>  {
             val unboundMove = startAt + numberOfTurns
             val passedByZero = unboundMove / 100
-            return unboundMove.endPositionOnDial() to passedByZero
+            return unboundMove.mod(100) to passedByZero
         }
     }
 
@@ -41,11 +41,9 @@ sealed class Turning(val numberOfTurns: Int) {
                 val numberOfLoops = unboundMove.absoluteValue / 100
                 if (startAt != 0) numberOfLoops + 1 else numberOfLoops
             } else 0
-            return unboundMove.endPositionOnDial() to passesByZero
+            return unboundMove.mod(100) to passesByZero
         }
     }
-
-    internal fun Int.endPositionOnDial(): Int = mod(100)
 }
 
 private fun String.toTurns(): List<Turning> = mapLines {

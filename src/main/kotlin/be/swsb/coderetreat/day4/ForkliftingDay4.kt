@@ -1,10 +1,8 @@
 package be.swsb.coderetreat.day4
 
-import kotlin.compareTo
-
 fun part1(input: String): Int =
     input.toRolls().let { rolls ->
-        rolls.count { it.numberOfNeighbouringRollsIn(rolls) == 4 }
+        rolls.count { it.numberOfNeighbouringRollsIn(rolls) < 4 }
     }
 
 fun part2(input: String): Int = input.toRolls().keepRemovingPossibleRolls().first
@@ -25,11 +23,7 @@ private fun Rolls.rollsAfterOneRemoval() = mapNotNull { if (it.numberOfNeighbour
 
 data class Spot(val x: Int, val y: Int) {
     val neighbours: Set<Spot>
-        get() = listOf(
-            Spot(-1, -1), Spot(0, -1), Spot(1, -1),
-            Spot(-1, 0), Spot(1, 0),
-            Spot(-1, 1), Spot(0, 1), Spot(1, 1),
-        ).map { vector -> this + vector }.toSet()
+        get() = neighbouringSpots.map { vector -> this + vector }.toSet()
 
     fun numberOfNeighbouringRollsIn(rolls: Rolls) = neighbours.sumOf { if (it in rolls) 1 else 0 }
 
@@ -43,8 +37,8 @@ internal fun String.toRolls() =
         }
     }.filterNotNull()
 
-internal fun Rolls.visualize(): String {
-    return (0..9).joinToString("\n") { y ->
+internal fun Rolls.visualize() =
+    (0..9).joinToString("\n") { y ->
         (0..9).joinToString("") { x ->
             when {
                 Spot(x, y) in this -> "@"
@@ -52,6 +46,11 @@ internal fun Rolls.visualize(): String {
             }
         }
     }.trimIndent()
-}
 
 typealias Rolls = List<Spot>
+
+private val neighbouringSpots = listOf(
+    Spot(-1, -1), Spot(0, -1), Spot(1, -1),
+    Spot(-1, 0), Spot(1, 0),
+    Spot(-1, 1), Spot(0, 1), Spot(1, 1),
+)

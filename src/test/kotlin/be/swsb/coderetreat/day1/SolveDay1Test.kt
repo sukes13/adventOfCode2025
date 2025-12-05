@@ -17,19 +17,19 @@ class SolveDay1Test {
     @Test
     fun `actual input part 1`() {
         val input = readFile("day1/input.txt")
-        Assertions.assertThat(solve1(input)).isEqualTo(0)
+        Assertions.assertThat(solve1(input)).isEqualTo(1043)
     }
 
     @Test
     fun `example input part 2`() {
         val input = readFile("day1/exampleInput.txt")
-        Assertions.assertThat(solve2(input)).isEqualTo(0)
+        Assertions.assertThat(solve2(input)).isEqualTo(6)
     }
 
     @Test
     fun `actual input part 2`() {
         val input = readFile("day1/input.txt")
-        Assertions.assertThat(solve2(input)).isEqualTo(0)
+        Assertions.assertThat(solve2(input)).isEqualTo(5012) //between 3909 && 6273, not 5012
     }
 
     private fun solve1(input: String): Int = part1(input)

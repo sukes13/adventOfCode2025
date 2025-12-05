@@ -3,57 +3,49 @@ package be.swsb.coderetreat.day1
 import be.swsb.coderetreat.mapLines
 import kotlin.math.absoluteValue
 
-fun part1(input: String): Int {
-    val turnings = input.toTurns()
-    var pointer = Pointer(50)
-    val allPointers = turnings.map{ turning ->
-        pointer.move(turning).also{ pointer = it }
+fun part1(input: String) = input.toTurns().fold(TurningResult(50)) { acc, turning ->
+    turning(acc.position).let { (endAt, _) ->
+        TurningResult(
+            position = endAt,
+            result = acc.result + if (endAt == 0) 1 else 0
+        )
     }
+}.result
 
-   return allPointers.count{ it.position == 0 }
-}
-
-fun part2(input: String): Int {
-    val turnings = input.toTurns()
-    var pointer = Pointer(50)
-    val allPointers = turnings.map{ turning ->
-        pointer.move(turning).also{ pointer = it }
+fun part2(input: String) = input.toTurns().fold(TurningResult(50)) { acc, turning ->
+    turning(acc.position).let { (endAt, passesByZero) ->
+        TurningResult(
+            position = endAt,
+            result = acc.result + passesByZero
+        )
     }
-    allPointers.forEach { println("Pos = ${it.position} and Zeros = ${it.numberOfZeros}") }
-    return allPointers.sumOf { it.numberOfZeros }
-}
+}.result
 
-sealed class Turning(val numberOfTurns : Int){
+data class TurningResult(val position: Int, val result: Int = 0)
 
-    abstract operator fun invoke(startAt : Int) : Pair<Int, Int>
+sealed class Turning(val numberOfTurns: Int) {
+    abstract operator fun invoke(startAt: Int): Pair<Int,Int>
 
-    class Right(numberOfTurns: Int) : Turning(numberOfTurns){
-        override fun invoke(startAt : Int): Pair<Int, Int> {
-            val numberOfZeros = (startAt + numberOfTurns) /100
-            val endPositionOnDial = (startAt + numberOfTurns).endPositionOnDial()
-            return endPositionOnDial to numberOfZeros
+    class Right(numberOfTurns: Int) : Turning(numberOfTurns) {
+        override fun invoke(startAt: Int): Pair<Int,Int>  {
+            val unboundMove = startAt + numberOfTurns
+            val passedByZero = unboundMove / 100
+            return unboundMove.endPositionOnDial() to passedByZero
         }
     }
 
-    class Left(numberOfTurns: Int) : Turning(numberOfTurns){
-        override fun invoke(startAt : Int): Pair<Int, Int> {
-            val i = startAt - numberOfTurns
-            val numberOfZs = if(i <= 0){
-                val numberOfLoops = i.absoluteValue / 100
-                if(startAt!=0) numberOfLoops + 1 else numberOfLoops
+    class Left(numberOfTurns: Int) : Turning(numberOfTurns) {
+        override fun invoke(startAt: Int): Pair<Int,Int> {
+            val unboundMove = startAt - numberOfTurns
+            val passesByZero = if (unboundMove <= 0) {
+                val numberOfLoops = unboundMove.absoluteValue / 100
+                if (startAt != 0) numberOfLoops + 1 else numberOfLoops
             } else 0
-            val endPositionOnDial = (startAt - numberOfTurns).endPositionOnDial()
-            return endPositionOnDial to numberOfZs
+            return unboundMove.endPositionOnDial() to passesByZero
         }
     }
-    internal fun Int.endPositionOnDial(): Int = mod(100)
-}
 
-class Pointer(val position: Int, val numberOfZeros : Int = 0) {
-    fun move(turning: Turning): Pointer {
-        val turning1 = turning(position)
-        return Pointer((turning1.first), numberOfZeros = turning1.second)
-    }
+    internal fun Int.endPositionOnDial(): Int = mod(100)
 }
 
 private fun String.toTurns(): List<Turning> = mapLines {

@@ -3,47 +3,55 @@ package be.swsb.coderetreat.day1
 import be.swsb.coderetreat.mapLines
 import kotlin.math.absoluteValue
 
-fun part1(input: String) = input.toTurns().fold(TurningResult(50)) { acc, turning ->
-    turning(acc.position).let { (endAt, _) ->
-        TurningResult(
-            position = endAt,
-            result = acc.result + if (endAt == 0) 1 else 0
-        )
-    }
-}.result
+fun part1(input: String) = input.toTurns()
+    .fold(TurningResult(50)) { acc, turning ->
+        turning(acc.endPosition).let { turnResult ->
+            turnResult.copy(endAtZero = turnResult.endAtZero + acc.endAtZero)
+        }
+    }.endAtZero
 
-fun part2(input: String) = input.toTurns().fold(TurningResult(50)) { acc, turning ->
-    turning(acc.position).let { (endAt, passesByZero) ->
-        TurningResult(
-            position = endAt,
-            result = acc.result + passesByZero
-        )
-    }
-}.result
+fun part2(input: String) = input.toTurns()
+    .fold(TurningResult(50)) { acc, turning ->
+        turning(acc.endPosition).let { turnResult ->
+            turnResult.copy(passesByNull = turnResult.passesByNull + acc.passesByNull)
+        }
+    }.passesByNull
 
-data class TurningResult(val position: Int, val result: Int = 0)
+data class TurningResult(val endPosition: Int, val endAtZero: Int = 0, val passesByNull: Int = 0)
+
 
 sealed class Turning(val numberOfTurns: Int) {
-    abstract operator fun invoke(startAt: Int): Pair<Int,Int>
+    abstract operator fun invoke(startAt: Int): TurningResult
 
     class Right(numberOfTurns: Int) : Turning(numberOfTurns) {
-        override fun invoke(startAt: Int): Pair<Int,Int>  {
+        override fun invoke(startAt: Int): TurningResult {
             val unboundMove = startAt + numberOfTurns
-            val passedByZero = unboundMove / 100
-            return unboundMove.mod(100) to passedByZero
+            val endPosition = unboundMove.mod(100)
+            return TurningResult(
+                endPosition = endPosition,
+                endAtZero = endedAtZero(endPosition),
+                passesByNull = unboundMove / 100
+            )
         }
     }
 
     class Left(numberOfTurns: Int) : Turning(numberOfTurns) {
-        override fun invoke(startAt: Int): Pair<Int,Int> {
+        override fun invoke(startAt: Int): TurningResult {
             val unboundMove = startAt - numberOfTurns
-            val passesByZero = if (unboundMove <= 0) {
-                val numberOfLoops = unboundMove.absoluteValue / 100
-                if (startAt != 0) numberOfLoops + 1 else numberOfLoops
-            } else 0
-            return unboundMove.mod(100) to passesByZero
+            val endPosition = unboundMove.mod(100)
+            return TurningResult(
+                endPosition = endPosition,
+                endAtZero = endedAtZero(endPosition),
+                passesByNull = if (unboundMove <= 0) {
+                    val numberOfLoops = unboundMove.absoluteValue / 100
+                    if (startAt == 0) numberOfLoops else numberOfLoops + 1
+                } else 0
+            )
         }
+
     }
+
+    internal fun endedAtZero(endPosition: Int): Int = if (endPosition == 0) 1 else 0
 }
 
 private fun String.toTurns(): List<Turning> = mapLines {

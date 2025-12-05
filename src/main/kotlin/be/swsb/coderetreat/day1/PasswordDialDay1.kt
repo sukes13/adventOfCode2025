@@ -29,25 +29,30 @@ sealed class Turning(val numberOfTurns : Int){
 
     class Right(numberOfTurns: Int) : Turning(numberOfTurns){
         override fun invoke(startAt : Int): Pair<Int, Int> {
-            val i = (startAt + numberOfTurns) /100
-            val numberOfZs = if(startAt!=0 && i >= 0) i else 0
-            return startAt + numberOfTurns to numberOfZs
+            val numberOfZeros = (startAt + numberOfTurns) /100
+            val endPositionOnDial = (startAt + numberOfTurns).endPositionOnDial()
+            return endPositionOnDial to numberOfZeros
         }
     }
 
     class Left(numberOfTurns: Int) : Turning(numberOfTurns){
         override fun invoke(startAt : Int): Pair<Int, Int> {
             val i = startAt - numberOfTurns
-            val numberOfZs = if(startAt!=0 && i <= 0) (i.absoluteValue/100) + 1 else 0
-            return startAt - numberOfTurns to numberOfZs
+            val numberOfZs = if(i <= 0){
+                val numberOfLoops = i.absoluteValue / 100
+                if(startAt!=0) numberOfLoops + 1 else numberOfLoops
+            } else 0
+            val endPositionOnDial = (startAt - numberOfTurns).endPositionOnDial()
+            return endPositionOnDial to numberOfZs
         }
     }
+    internal fun Int.endPositionOnDial(): Int = mod(100)
 }
 
 class Pointer(val position: Int, val numberOfZeros : Int = 0) {
     fun move(turning: Turning): Pointer {
         val turning1 = turning(position)
-        return Pointer((turning1.first).mod(100), numberOfZeros = turning1.second)
+        return Pointer((turning1.first), numberOfZeros = turning1.second)
     }
 }
 

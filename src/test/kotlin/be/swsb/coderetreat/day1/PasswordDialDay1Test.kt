@@ -12,8 +12,8 @@ class PasswordDialDay1Test {
     @ParameterizedTest
     @MethodSource("rollOverCases")
     fun `checking roll over zero counting`(turning: Turning, startAt: Int, endAt: Int, numberOfZeros: Int) {
-        assertThat(turning(startAt).first).isEqualTo(endAt)
-        assertThat(turning(startAt).second).isEqualTo(numberOfZeros)
+        assertThat(turning(startAt).endPosition).isEqualTo(endAt)
+        assertThat(turning(startAt).passesByNull).isEqualTo(numberOfZeros)
     }
 
     companion object {

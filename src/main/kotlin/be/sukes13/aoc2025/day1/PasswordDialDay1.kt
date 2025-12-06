@@ -14,31 +14,31 @@ fun part2(input: String) = input.toTurns()
     }.passesByZero
 
 sealed class Turning(val numberOfTurns: Int) {
-    abstract operator fun invoke(pastResult: TurningState): TurningState
+    abstract operator fun invoke(previousState: TurningState): TurningState
 
     class Right(numberOfTurns: Int) : Turning(numberOfTurns) {
-        override fun invoke(pastResult: TurningState): TurningState {
-            val unboundMove = pastResult.position + numberOfTurns
+        override fun invoke(previousState: TurningState): TurningState {
+            val unboundMove = previousState.position + numberOfTurns
             val endedAt = unboundMove.mod(100)
             return TurningState(
                 position = endedAt,
-                endedAtZero = pastResult.endedAtZero + endedAt.countIfAtZero(),
-                passesByZero = pastResult.passesByZero + unboundMove / 100
+                endedAtZero = previousState.endedAtZero + endedAt.countIfAtZero(),
+                passesByZero = previousState.passesByZero + unboundMove / 100
             )
         }
     }
 
     class Left(numberOfTurns: Int) : Turning(numberOfTurns) {
-        override fun invoke(pastResult: TurningState): TurningState {
-            val unboundMove = pastResult.position - numberOfTurns
+        override fun invoke(previousState: TurningState): TurningState {
+            val unboundMove = previousState.position - numberOfTurns
             val endedAt = unboundMove.mod(100)
             return TurningState(
                 position = endedAt,
-                endedAtZero = pastResult.endedAtZero + endedAt.countIfAtZero(),
-                passesByZero = pastResult.passesByZero +
+                endedAtZero = previousState.endedAtZero + endedAt.countIfAtZero(),
+                passesByZero = previousState.passesByZero +
                         if (unboundMove <= 0) {
                             val numberOfLoops = unboundMove.absoluteValue / 100
-                            if (pastResult.position == 0) numberOfLoops else numberOfLoops + 1
+                            if (previousState.position == 0) numberOfLoops else numberOfLoops + 1
                         } else 0
             )
         }

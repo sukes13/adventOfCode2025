@@ -1,7 +1,7 @@
-package be.swsb.coderetreat.day1
+package be.sukes13.aoc2025.day1
 
-import be.swsb.coderetreat.day1.Turning.Left
-import be.swsb.coderetreat.day1.Turning.Right
+import be.sukes13.aoc2025.day1.Turning.Left
+import be.sukes13.aoc2025.day1.Turning.Right
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.of

@@ -1,6 +1,6 @@
-package be.swsb.coderetreat.day1
+package be.sukes13.aoc2025.day1
 
-import be.swsb.coderetreat.mapLines
+import be.sukes13.aoc2025.mapLines
 import kotlin.math.absoluteValue
 
 fun part1(input: String) = input.toTurns()

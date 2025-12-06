@@ -1,4 +1,4 @@
-package be.swsb.coderetreat.day4
+package be.sukes13.aoc2025.day4
 
 fun part1(input: String): Int =
     input.toRolls().let { rolls ->
@@ -27,7 +27,8 @@ data class Spot(val x: Int, val y: Int) {
 
     fun numberOfNeighbouringRollsIn(rolls: Rolls) = neighbours.sumOf { if (it in rolls) 1 else 0 }
 
-    private operator fun plus(vector: Spot) = Spot(this.x + vector.x, this.y + vector.y)
+    private operator fun plus(vector: Spot) =
+        Spot(this.x + vector.x, this.y + vector.y)
 }
 
 internal fun String.toRolls() =

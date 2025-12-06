@@ -1,6 +1,6 @@
-package be.swsb.coderetreat
+package be.sukes13.aoc2025
 
-import be.swsb.coderetreat.Direction.*
+import be.sukes13.aoc2025.Direction.*
 
 typealias Grid<T> = Map<Int, List<T>>
 

@@ -10,15 +10,12 @@ data class IdRange(private val startId: Long, private val endId: Long) {
 
     fun invalidIdsPart1() = rangeAsStrings
         .filter { it.length % 2 == 0 }
-        .filter { it.isInvalidPart1() }
+        .filter { (it.length / 2).let { middle -> it.take(middle) == it.takeLast(middle) } }
         .map { it.toLong() }
 
     fun invalidIdsPart2() = rangeAsStrings
         .filter { it.isInvalidPart2() }
         .map { it.toLong() }
-
-    private fun String.isInvalidPart1() =
-        (length / 2).let { middle -> take(middle) == takeLast(middle) }
 
     private fun String.isInvalidPart2() = run breaker@{
         (1 until length).forEach {

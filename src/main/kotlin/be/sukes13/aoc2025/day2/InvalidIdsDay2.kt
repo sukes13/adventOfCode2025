@@ -1,4 +1,4 @@
-package be.swsb.coderetreat.day2
+package be.sukes13.aoc2025.day2
 
 fun part1(input: String) = input.toIdRanges().flatMap { it.invalidIdsPart1() }.sum()
 

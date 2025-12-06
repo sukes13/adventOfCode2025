@@ -1,6 +1,6 @@
-package be.swsb.coderetreat.day4
+package be.sukes13.aoc2025.day4
 
-import be.swsb.coderetreat.readFile
+import be.sukes13.aoc2025.readFile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -30,7 +30,7 @@ class SolveDay4Test {
         assertThat(solve2(input)).isEqualTo(8701)
     }
 
-    private fun solve1(input: String): Int = part1(input)
-    private fun solve2(input: String): Int = part2(input)
+    private fun solve1(input: String): Int = be.sukes13.aoc2025.day4.part1(input)
+    private fun solve2(input: String): Int = be.sukes13.aoc2025.day4.part2(input)
 
 }

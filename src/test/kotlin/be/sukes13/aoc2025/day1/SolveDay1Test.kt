@@ -1,6 +1,6 @@
-package be.swsb.coderetreat.day1
+package be.sukes13.aoc2025.day1
 
-import be.swsb.coderetreat.readFile
+import be.sukes13.aoc2025.readFile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

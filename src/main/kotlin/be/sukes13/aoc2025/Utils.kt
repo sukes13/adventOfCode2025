@@ -1,6 +1,4 @@
-package be.swsb.coderetreat
-
-import java.util.concurrent.atomic.DoubleAccumulator
+package be.sukes13.aoc2025
 
 fun readFile(fileName: String): String =
     {}::class.java.classLoader.getResourceAsStream(fileName)?.reader()?.readText() ?: error("Could not load $fileName")

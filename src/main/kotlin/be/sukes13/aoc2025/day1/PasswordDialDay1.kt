@@ -4,16 +4,16 @@ import be.sukes13.aoc2025.mapLines
 import kotlin.math.absoluteValue
 
 fun part1(input: String) = input.toTurns()
-    .fold(TurningResult(50)) { acc, turning ->
-        turning(acc.endPosition).let { turnResult ->
-            turnResult.copy(endAtZero = turnResult.endAtZero + acc.endAtZero)
+    .fold(TurningResult(50)) { passedTurns, turning ->
+        turning(passedTurns.endedAt).let { turnResult ->
+            turnResult.copy(endedAtZero = passedTurns.endedAtZero + turnResult.endedAtZero)
         }
-    }.endAtZero
+    }.endedAtZero
 
 fun part2(input: String) = input.toTurns()
-    .fold(TurningResult(50)) { acc, turning ->
-        turning(acc.endPosition).let { turnResult ->
-            turnResult.copy(passesByNull = turnResult.passesByNull + acc.passesByNull)
+    .fold(TurningResult(50)) { passedTurns, turning ->
+        turning(passedTurns.endedAt).let { turnResult ->
+            turnResult.copy(passesByNull = passedTurns.passesByNull + turnResult.passesByNull)
         }
     }.passesByNull
 
@@ -25,8 +25,8 @@ sealed class Turning(val numberOfTurns: Int) {
             val unboundMove = startAt + numberOfTurns
             val endPosition = unboundMove.mod(100)
             return TurningResult(
-                endPosition = endPosition,
-                endAtZero = endedAtZero(endPosition),
+                endedAt = endPosition,
+                endedAtZero = endedAtZero(endPosition),
                 passesByNull = unboundMove / 100
             )
         }
@@ -37,8 +37,8 @@ sealed class Turning(val numberOfTurns: Int) {
             val unboundMove = startAt - numberOfTurns
             val endPosition = unboundMove.mod(100)
             return TurningResult(
-                endPosition = endPosition,
-                endAtZero = endedAtZero(endPosition),
+                endedAt = endPosition,
+                endedAtZero = endedAtZero(endPosition),
                 passesByNull = if (unboundMove <= 0) {
                     val numberOfLoops = unboundMove.absoluteValue / 100
                     if (startAt == 0) numberOfLoops else numberOfLoops + 1
@@ -50,7 +50,7 @@ sealed class Turning(val numberOfTurns: Int) {
     internal fun endedAtZero(endPosition: Int) = if (endPosition == 0) 1 else 0
 }
 
-data class TurningResult(val endPosition: Int, val endAtZero: Int = 0, val passesByNull: Int = 0)
+data class TurningResult(val endedAt: Int, val endedAtZero: Int = 0, val passesByNull: Int = 0)
 
 private fun String.toTurns(): List<Turning> = mapLines {
     val numberOfTurns = it.takeLast(it.length - 1).toInt()

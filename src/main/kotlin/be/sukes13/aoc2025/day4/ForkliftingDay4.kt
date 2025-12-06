@@ -21,7 +21,7 @@ fun Rolls.removeRolls(): Pair<Int, Rolls> =
 
 private fun Rolls.rollsAfterOneRemoval() = mapNotNull { if (it.numberOfNeighbouringRollsIn(this) < 4) null else it }
 
-data class Spot(val x: Int, val y: Int) {
+data class Spot(private val x: Int, private val y: Int) {
     val neighbours: Set<Spot>
         get() = neighbouringSpots.map { vector -> this + vector }.toSet()
 

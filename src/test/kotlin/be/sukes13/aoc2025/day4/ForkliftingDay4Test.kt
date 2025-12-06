@@ -10,50 +10,36 @@ class ForkliftingDay4Test {
     fun `parse to rolls`() {
         val input = readFile("day4/exampleInput.txt")
         assertThat(input.toRolls()).contains(
-            be.sukes13.aoc2025.day4.Spot(2, 0),
-            be.sukes13.aoc2025.day4.Spot(3, 0),
-            be.sukes13.aoc2025.day4.Spot(5, 0),
-            be.sukes13.aoc2025.day4.Spot(1, 1),
-            be.sukes13.aoc2025.day4.Spot(2, 1),
-            be.sukes13.aoc2025.day4.Spot(8, 0),
-            be.sukes13.aoc2025.day4.Spot(9, 1)
+            Spot(2, 0),
+            Spot(3, 0),
+            Spot(5, 0),
+            Spot(1, 1),
+            Spot(2, 1),
+            Spot(8, 0),
+            Spot(9, 1)
         )
         assertThat(input.toRolls()).doesNotContain(
-            be.sukes13.aoc2025.day4.Spot(0, 0),
-            be.sukes13.aoc2025.day4.Spot(1, 0),
-            be.sukes13.aoc2025.day4.Spot(4, 0),
-            be.sukes13.aoc2025.day4.Spot(3, 1),
-            be.sukes13.aoc2025.day4.Spot(5, 1),
-            be.sukes13.aoc2025.day4.Spot(9, 0),
-            be.sukes13.aoc2025.day4.Spot(10, 1)
+            Spot(0, 0),
+            Spot(1, 0),
+            Spot(4, 0),
+            Spot(3, 1),
+            Spot(5, 1),
+            Spot(9, 0),
+            Spot(10, 1)
         )
     }
 
     @Test
     fun `find neighbours of 0,0`() {
-        assertThat(be.sukes13.aoc2025.day4.Spot(0, 0).neighbours).containsExactlyInAnyOrder(
-            be.sukes13.aoc2025.day4.Spot(-1, -1),
-            be.sukes13.aoc2025.day4.Spot(0, -1),
-            be.sukes13.aoc2025.day4.Spot(1, -1),
-            be.sukes13.aoc2025.day4.Spot(-1, 0),
-            be.sukes13.aoc2025.day4.Spot(1, 0),
-            be.sukes13.aoc2025.day4.Spot(-1, 1),
-            be.sukes13.aoc2025.day4.Spot(0, 1),
-            be.sukes13.aoc2025.day4.Spot(1, 1)
-        )
-    }
-
-    @Test
-    fun `find neighbours of 0,1`() {
-        assertThat(be.sukes13.aoc2025.day4.Spot(1, 0).neighbours).containsExactlyInAnyOrder(
-            be.sukes13.aoc2025.day4.Spot(0, -1),
-            be.sukes13.aoc2025.day4.Spot(1, -1),
-            be.sukes13.aoc2025.day4.Spot(2, -1),
-            be.sukes13.aoc2025.day4.Spot(0, 0),
-            be.sukes13.aoc2025.day4.Spot(2, 0),
-            be.sukes13.aoc2025.day4.Spot(0, 1),
-            be.sukes13.aoc2025.day4.Spot(1, 1),
-            be.sukes13.aoc2025.day4.Spot(2, 1)
+        assertThat(Spot(0, 0).neighbours).containsExactlyInAnyOrder(
+            Spot(-1, -1),
+            Spot(0, -1),
+            Spot(1, -1),
+            Spot(-1, 0),
+            Spot(1, 0),
+            Spot(-1, 1),
+            Spot(0, 1),
+            Spot(1, 1)
         )
     }
 
@@ -61,10 +47,10 @@ class ForkliftingDay4Test {
     fun `number of roll-neighbours`() {
         val rolls = readFile("day4/exampleInput.txt").toRolls()
 
-        assertThat(be.sukes13.aoc2025.day4.Spot(0, 0).numberOfNeighbouringRollsIn(rolls)).isEqualTo(2)
-        assertThat(be.sukes13.aoc2025.day4.Spot(1, 0).numberOfNeighbouringRollsIn(rolls)).isEqualTo(4)
-        assertThat(be.sukes13.aoc2025.day4.Spot(2, 0).numberOfNeighbouringRollsIn(rolls)).isEqualTo(3)
-        assertThat(be.sukes13.aoc2025.day4.Spot(1, 1).numberOfNeighbouringRollsIn(rolls)).isEqualTo(6)
+        assertThat(Spot(0, 0).numberOfNeighbouringRollsIn(rolls)).isEqualTo(2)
+        assertThat(Spot(1, 0).numberOfNeighbouringRollsIn(rolls)).isEqualTo(4)
+        assertThat(Spot(2, 0).numberOfNeighbouringRollsIn(rolls)).isEqualTo(3)
+        assertThat(Spot(1, 1).numberOfNeighbouringRollsIn(rolls)).isEqualTo(6)
     }
 
     @Test

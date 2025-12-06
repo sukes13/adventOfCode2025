@@ -11,7 +11,7 @@ fun part1(input: String) = input.toTurns()
 fun part2(input: String) = input.toTurns()
     .fold(TurningState(position = 50)) { previousState, turning ->
         turning(previousState)
-    }.passesByNull
+    }.passesByZero
 
 sealed class Turning(val numberOfTurns: Int) {
     abstract operator fun invoke(pastResult: TurningState): TurningState
@@ -23,7 +23,7 @@ sealed class Turning(val numberOfTurns: Int) {
             return TurningState(
                 position = endedAt,
                 endedAtZero = pastResult.endedAtZero + endedAt.countIfAtZero(),
-                passesByNull = pastResult.passesByNull + unboundMove / 100
+                passesByZero = pastResult.passesByZero + unboundMove / 100
             )
         }
     }
@@ -35,7 +35,7 @@ sealed class Turning(val numberOfTurns: Int) {
             return TurningState(
                 position = endedAt,
                 endedAtZero = pastResult.endedAtZero + endedAt.countIfAtZero(),
-                passesByNull = pastResult.passesByNull +
+                passesByZero = pastResult.passesByZero +
                         if (unboundMove <= 0) {
                             val numberOfLoops = unboundMove.absoluteValue / 100
                             if (pastResult.position == 0) numberOfLoops else numberOfLoops + 1
@@ -47,7 +47,7 @@ sealed class Turning(val numberOfTurns: Int) {
     internal fun Int.countIfAtZero() = if (this == 0) 1 else 0
 }
 
-data class TurningState(val position: Int, val endedAtZero: Int = 0, val passesByNull: Int = 0)
+data class TurningState(val position: Int, val endedAtZero: Int = 0, val passesByZero: Int = 0)
 
 private fun String.toTurns(): List<Turning> = mapLines {
     val numberOfTurns = it.takeLast(it.length - 1).toInt()

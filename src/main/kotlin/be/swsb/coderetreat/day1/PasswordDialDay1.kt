@@ -17,9 +17,6 @@ fun part2(input: String) = input.toTurns()
         }
     }.passesByNull
 
-data class TurningResult(val endPosition: Int, val endAtZero: Int = 0, val passesByNull: Int = 0)
-
-
 sealed class Turning(val numberOfTurns: Int) {
     abstract operator fun invoke(startAt: Int): TurningResult
 
@@ -48,11 +45,12 @@ sealed class Turning(val numberOfTurns: Int) {
                 } else 0
             )
         }
-
     }
 
-    internal fun endedAtZero(endPosition: Int): Int = if (endPosition == 0) 1 else 0
+    internal fun endedAtZero(endPosition: Int) = if (endPosition == 0) 1 else 0
 }
+
+data class TurningResult(val endPosition: Int, val endAtZero: Int = 0, val passesByNull: Int = 0)
 
 private fun String.toTurns(): List<Turning> = mapLines {
     val numberOfTurns = it.takeLast(it.length - 1).toInt()

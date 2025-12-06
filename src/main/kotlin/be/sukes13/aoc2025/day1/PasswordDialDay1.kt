@@ -35,13 +35,15 @@ sealed class Turning(val numberOfTurns: Int) {
             return TurningState(
                 position = endedAt,
                 endedAtZero = previousState.endedAtZero + endedAt.countIfAtZero(),
-                passesByZero = previousState.passesByZero +
-                        if (unboundMove <= 0) {
-                            val numberOfLoops = unboundMove.absoluteValue / 100
-                            if (previousState.position == 0) numberOfLoops else numberOfLoops + 1
-                        } else 0
+                passesByZero = previousState.passesByZero + unboundMove.passesByZeroFrom(previousState)
             )
         }
+
+        private fun Int.passesByZeroFrom(previousState: TurningState) =
+            if (this <= 0) {
+                val numberOfLoops = absoluteValue / 100
+                if (previousState.position == 0) numberOfLoops else numberOfLoops + 1
+            } else 0
     }
 
     internal fun Int.countIfAtZero() = if (this == 0) 1 else 0

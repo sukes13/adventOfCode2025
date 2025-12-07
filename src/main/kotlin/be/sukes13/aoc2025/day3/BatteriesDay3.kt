@@ -16,6 +16,7 @@ fun List<Int>.turnOnBatteries(numberOfBatteries: Int) =
 private fun List<Int>.indexOfHighestUsableDigit(numberOfBatteries: Int) =
     indexOfFirst { it == dropLast(numberOfBatteries).maxOrNull() }
 
-private fun String.toRacks() = mapLines { it.toRack() }
-fun String.toRack() = map { it.digitToInt() }
+private fun String.toRacks() = mapLines { rack ->
+    rack.map { it.digitToInt() }
+}
 

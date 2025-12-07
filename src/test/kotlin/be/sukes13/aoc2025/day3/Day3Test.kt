@@ -21,6 +21,8 @@ class Day3Test {
             of("234234234234278".toRack(), 434234234278L),
             of("818181911112111".toRack(), 888911112111L),
         )
+
+        private fun String.toRack(): List<Int> = map { it.digitToInt() }
     }
 }
 

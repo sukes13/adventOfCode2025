@@ -3,15 +3,14 @@ package be.sukes13.aoc2025.day1
 import be.sukes13.aoc2025.mapLines
 import kotlin.math.absoluteValue
 
-fun part1(input: String) = input.toTurns()
-    .fold(TurningState(position = 50)) { previousState, turning ->
-        turning(previousState)
-    }.endedAtZero
+fun part1(input: String) = input.toTurns().turningState().endedAtZero
 
-fun part2(input: String) = input.toTurns()
-    .fold(TurningState(position = 50)) { previousState, turning ->
+fun part2(input: String) = input.toTurns().turningState().passesByZero
+
+private fun List<Turning>.turningState(): TurningState =
+    fold(TurningState(position = 50)) { previousState, turning ->
         turning(previousState)
-    }.passesByZero
+    }
 
 sealed class Turning(val numberOfTurns: Int) {
     abstract operator fun invoke(previousState: TurningState): TurningState

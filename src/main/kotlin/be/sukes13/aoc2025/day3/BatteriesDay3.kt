@@ -8,12 +8,12 @@ fun part2(input: String) = input.toRacks().sumOf { it.turnOnBatteries(12) }
 
 fun List<Int>.turnOnBatteries(numberOfBatteries: Int) =
     (numberOfBatteries - 1 downTo 0).fold(this to "") { (remainingRack, currentResult), remainingNumberOfBatteries ->
-        val indexOfHighestUsable = remainingRack.indexOfHighestUsable(remainingNumberOfBatteries)
+        val indexOfHighestUsable = remainingRack.indexOfHighestUsableDigit(remainingNumberOfBatteries)
         val newRack = remainingRack.drop(indexOfHighestUsable + 1)
         newRack to currentResult + remainingRack[indexOfHighestUsable]
     }.second.toLong()
 
-private fun List<Int>.indexOfHighestUsable(numberOfBatteries: Int) =
+private fun List<Int>.indexOfHighestUsableDigit(numberOfBatteries: Int) =
     indexOfFirst { it == dropLast(numberOfBatteries).maxOrNull() }
 
 private fun String.toRacks() = mapLines { it.toRack() }

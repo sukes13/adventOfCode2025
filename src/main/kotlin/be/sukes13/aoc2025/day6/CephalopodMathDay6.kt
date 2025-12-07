@@ -31,10 +31,9 @@ private fun String.splitStringOnAnyNumberOfBlanks() = trim().split(" +".toRegex(
 
 private fun List<List<String>>.createCephalopodOperations(input: String) =
     input.lines().last().splitStringOnAnyNumberOfBlanks().let { operations ->
-        filterNot { it.isEmpty() }
-            .mapIndexed { index, numbers ->
-                CephalopodOperation(numbers.map { it.toLong() }, operations[index])
-            }
+        filterNot { it.isEmpty() }.mapIndexed { index, numbers ->
+            CephalopodOperation(numbers.map { it.toLong() }, operations[index])
+        }
     }
 
 data class CephalopodOperation(private val numbers: List<Long>, private val operation: String) {

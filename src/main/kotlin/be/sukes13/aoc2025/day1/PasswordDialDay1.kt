@@ -3,11 +3,11 @@ package be.sukes13.aoc2025.day1
 import be.sukes13.aoc2025.mapLines
 import kotlin.math.absoluteValue
 
-fun part1(input: String) = input.toTurns().turningState().endedAtZero
+fun part1(input: String) = input.toTurns().executeTurns().endedAtZero
 
-fun part2(input: String) = input.toTurns().turningState().passesByZero
+fun part2(input: String) = input.toTurns().executeTurns().passesByZero
 
-private fun List<Turning>.turningState(): TurningState =
+private fun List<Turning>.executeTurns(): TurningState =
     fold(TurningState(position = 50)) { previousState, turning ->
         turning(previousState)
     }

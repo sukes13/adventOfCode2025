@@ -10,7 +10,7 @@ class Day3Test {
     @ParameterizedTest
     @MethodSource("part2")
     fun `check part2`(rack: List<Int>, result: Long) {
-        assertThat(rack.turnOnBatteries2(12)).isEqualTo(result)
+        assertThat(rack.turnOnBatteries(12)).isEqualTo(result)
     }
 
     companion object {

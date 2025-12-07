@@ -13,6 +13,12 @@ fun String.filterLines(variant: (String) -> Boolean) = lines().filter(variant)
 
 fun String.splitOnEmptyLine() = split("\r\n\r\n")
 
+fun <T> List<List<T>>.turnColumnsIntoRows() =
+    (0 until first().size).fold(mutableListOf(listOf<T>())) { acc, index ->
+        acc.add(map { it[index] })
+        acc
+    }
+
 fun <T> Iterable<Set<T>>.overlap(): Set<T> =
     fold(first().toSet()) { shared, element ->
         shared intersect element.toSet()

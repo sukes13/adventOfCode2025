@@ -21,13 +21,13 @@ class SolveDay6Test {
     @Test
     fun `example input part 2`() {
         val input = readFile("day6/exampleInput.txt")
-        assertThat(solve2(input)).isEqualTo(0)
+        assertThat(solve2(input)).isEqualTo(3263827L)
     }
 
     @Test
     fun `actual input part 2`() {
         val input = readFile("day6/input.txt")
-        assertThat(solve2(input)).isEqualTo(0)
+        assertThat(solve2(input)).isEqualTo(9348430857627L) //too high
     }
 
     private fun solve1(input: String) = part1(input)

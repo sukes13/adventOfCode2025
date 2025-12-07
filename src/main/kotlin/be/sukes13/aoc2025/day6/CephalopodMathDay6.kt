@@ -32,15 +32,17 @@ private fun String.splitStringOnAnyNumberOfBlanks() = trim().split(" +".toRegex(
 private fun List<List<String>>.createCephalopodOperations(input: String) =
     input.lines().last().splitStringOnAnyNumberOfBlanks().let { operations ->
         filterNot { it.isEmpty() }
-            .mapIndexed { index, numbers -> CephalopodOperation(numbers, operations[index]) }
+            .mapIndexed { index, numbers ->
+                CephalopodOperation(numbers.map { it.toLong() }, operations[index])
+            }
     }
 
-data class CephalopodOperation(private val numbers: List<String>, private val operation: String) {
+data class CephalopodOperation(private val numbers: List<Long>, private val operation: String) {
     private val operationFunction: (Long, Long) -> Long = when (operation) {
         "+" -> { a, b -> a + b }
         "*" -> { a, b -> a * b }
         else -> error("illegal operation")
     }
 
-    fun calculate() = numbers.map { it.toLong() }.reduce(operationFunction)
+    fun calculate() = numbers.reduce(operationFunction)
 }

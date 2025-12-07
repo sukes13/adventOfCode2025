@@ -46,8 +46,5 @@ data class CephalopodOperation(private val numbers: List<String>, private val op
         else -> error("illegal operation")
     }
 
-    fun calculate() = numbers.foldIndexed(numbers.first().toLong()) { index, acc, number ->
-        if (index == 0) acc
-        else operationFunction(acc, number.toLong())
-    }
+    fun calculate() = numbers.map { it.toLong() }.reduce(operationFunction)
 }

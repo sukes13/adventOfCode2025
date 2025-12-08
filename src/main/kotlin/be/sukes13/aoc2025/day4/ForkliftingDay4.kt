@@ -36,15 +36,6 @@ data class Spot(val x: Int, val y: Int) {
 
 internal fun String.toRolls() = toPoints('@').map{Spot(it.x, it.y)}
 
-internal fun Rolls.visualize() = (0..9).joinToString("\n") { y ->
-    (0..9).joinToString("") { x ->
-        when {
-            Spot(x, y) in this -> "@"
-            else -> "."
-        }
-    }
-}.trimIndent()
-
 typealias Rolls = List<Spot>
 
 private val neighbouringSpots = listOf(

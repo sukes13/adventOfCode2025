@@ -1,6 +1,9 @@
 package be.sukes13.aoc2025.day7
 
+import be.sukes13.aoc2025.Direction
+import be.sukes13.aoc2025.Direction.DOWN
 import be.sukes13.aoc2025.Point
+import be.sukes13.aoc2025.stepInDirection
 import be.sukes13.aoc2025.toPoints
 
 fun part1(input: String) = input.toManifold().sendBeam().splittersHit
@@ -18,7 +21,7 @@ data class Manifold(
     }
 
     private fun oneClick() =
-        if (lowestBeams.isEmpty()) copy(lowestBeams = setOf(start.moveDown()))
+        if (lowestBeams.isEmpty()) copy(lowestBeams = setOf(start.stepInDirection(DOWN)))
         else moveBeams().let { result ->
             copy(
                 lowestBeams = result.flatMap { it.first }.toSet(),
@@ -27,7 +30,7 @@ data class Manifold(
         }
 
     private fun moveBeams() = lowestBeams.map {
-        it.moveDown().let { oneDown ->
+        it.stepInDirection(DOWN).let { oneDown ->
             if (oneDown in splitters) oneDown.splitBeam() to 1
             else listOf(oneDown) to 0
         }

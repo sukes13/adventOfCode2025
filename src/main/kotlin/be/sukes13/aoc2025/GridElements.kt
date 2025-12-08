@@ -40,6 +40,8 @@ data class Point(val x: Int, val y: Int) {
     operator fun plus(vector: Point) = Point(this.x + vector.x, this.y + vector.y)
 
     fun touching(point: Point) = point in neighbours || point == this
+
+    fun moveDown() = copy(y=y+1)
 }
 
 
@@ -59,3 +61,10 @@ fun Point.stepInDirection(direction: Direction) =
 enum class Direction {
     UP, RIGHT, DOWN, LEFT;
 }
+
+fun String.toPoints(symbol: Char) =
+    lines().flatMapIndexed { y, line ->
+        line.mapIndexed { x, position ->
+            if (position == symbol) Point(x, y) else null
+        }
+    }.filterNotNull()

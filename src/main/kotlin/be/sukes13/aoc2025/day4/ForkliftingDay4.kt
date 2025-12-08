@@ -1,5 +1,8 @@
 package be.sukes13.aoc2025.day4
 
+import be.sukes13.aoc2025.Point
+import be.sukes13.aoc2025.toPoints
+
 fun part1(input: String): Int =
     input.toRolls().let { rolls ->
         rolls.count { it.numberOfNeighbouringRollsIn(rolls) < 4 }
@@ -21,7 +24,7 @@ fun Rolls.removeRolls(): Pair<Int, Rolls> =
 
 private fun Rolls.rollsAfterOneRemoval() = mapNotNull { if (it.numberOfNeighbouringRollsIn(this) < 4) null else it }
 
-data class Spot(private val x: Int, private val y: Int) {
+data class Spot(val x: Int, val y: Int) {
     val neighbours: Set<Spot>
         get() = neighbouringSpots.map { vector -> this + vector }.toSet()
 
@@ -31,22 +34,16 @@ data class Spot(private val x: Int, private val y: Int) {
         Spot(this.x + vector.x, this.y + vector.y)
 }
 
-internal fun String.toRolls() =
-    lines().flatMapIndexed { y, line ->
-        line.mapIndexed { x, spotInRoom ->
-            if (spotInRoom == '@') Spot(x, y) else null
-        }
-    }.filterNotNull()
+internal fun String.toRolls() = toPoints('@').map{Spot(it.x, it.y)}
 
-internal fun Rolls.visualize() =
-    (0..9).joinToString("\n") { y ->
-        (0..9).joinToString("") { x ->
-            when {
-                Spot(x, y) in this -> "@"
-                else -> "."
-            }
+internal fun Rolls.visualize() = (0..9).joinToString("\n") { y ->
+    (0..9).joinToString("") { x ->
+        when {
+            Spot(x, y) in this -> "@"
+            else -> "."
         }
-    }.trimIndent()
+    }
+}.trimIndent()
 
 typealias Rolls = List<Spot>
 

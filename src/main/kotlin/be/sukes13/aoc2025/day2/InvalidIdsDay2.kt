@@ -34,7 +34,6 @@ data class IdRange(private val startId: Long, private val endId: Long) {
         }
         return true
     }
-
 }
 
 fun String.toIdRanges() =

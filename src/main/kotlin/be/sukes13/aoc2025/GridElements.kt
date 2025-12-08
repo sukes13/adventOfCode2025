@@ -40,8 +40,6 @@ data class Point(val x: Int, val y: Int) {
     operator fun plus(vector: Point) = Point(this.x + vector.x, this.y + vector.y)
 
     fun touching(point: Point) = point in neighbours || point == this
-
-    fun moveDown() = copy(y=y+1)
 }
 
 
@@ -52,9 +50,9 @@ infix fun Point.lowerThan(other: Point) = y > other.y
 
 fun Point.stepInDirection(direction: Direction) =
     when (direction) {
-        UP -> copy(y = y + 1)
+        DOWN -> copy(y = y + 1)
         RIGHT -> copy(x = x + 1)
-        DOWN -> copy(y = y - 1)
+        UP -> copy(y = y - 1)
         LEFT -> copy(x = x - 1)
     }
 

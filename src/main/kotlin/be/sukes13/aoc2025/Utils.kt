@@ -23,3 +23,4 @@ fun <T> Iterable<Set<T>>.overlap(): Set<T> =
     fold(first().toSet()) { shared, element ->
         shared intersect element.toSet()
     }
+

@@ -103,4 +103,13 @@ class ForkliftingDay4Test {
         )
     }
 
+    private fun Rolls.visualize() = (0..9).joinToString("\n") { y ->
+        (0..9).joinToString("") { x ->
+            when {
+                Spot(x, y) in this -> "@"
+                else -> "."
+            }
+        }
+    }.trimIndent()
+
 }

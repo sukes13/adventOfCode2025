@@ -1,67 +1,39 @@
 package be.sukes13.aoc2025.day7
 
-import be.sukes13.aoc2025.Direction.DOWN
 import be.sukes13.aoc2025.Point
-import be.sukes13.aoc2025.stepInDirection
 import be.sukes13.aoc2025.toPoints
 
-fun part1(input: String) = input.toManifold().sendBeam().splittersHit
+fun part1(input: String) = input.toManifold().sendQuantumBeam().second
 
-fun part2(input: String) = input.toManifold().sendQuantumBeam()
+fun part2(input: String) = input.toManifold().sendQuantumBeam().first.values.sum()
 
 data class Manifold(
     val splitters: List<Point>,
     val start: Point,
-    val lowestBeams: Set<Point> = setOf(start),
-    val splittersHit: Int = 0,
 ) {
     private val bottom = splitters.maxBy { it.y }.y
+    private val createStartQuantumRow = (0..splitters.maxBy { it.x }.x + 1)
+        .associate { if (Point(it, 0) != start) it to 0L else start.x to 1L }
+        .toMutableMap()
 
-    fun sendQuantumBeam(): Int {
-        val startQuantumRow = (0..splitters.maxBy { it.x }.x).associate { if (Point(it, 0) != start) it to 0 else start.x to 1 }.toMutableMap()
-        return (0..bottom).fold(startQuantumRow) { previousRow, y ->
-            previousRow.forEach { (x, numberOfBeams) ->
-                if (Point(x, y + 1) !in splitters) previousRow[x] = numberOfBeams
-                else {
-                    previousRow[x - 1] = previousRow.numberOfBeamsLeft(x, y, previousRow[x]!!).also{ println("for ($x-1,$y) set $it")}
-                    previousRow[x + 1] = previousRow.numberOfBeamsRight(x, y, previousRow[x]!!).also{ println("for ($x,$y) set $it")}
-                    previousRow[x] = 0
-                }
-            }
-            previousRow.also { println(it.map { it.value }) }
-        }.values.sumOf { it }
-    }
-
-    private fun MutableMap<Int, Int>.numberOfBeamsLeft(x: Int, y: Int, beamsInSpot: Int): Int {
-        return beamsInSpot + if (Point(x - 2, y + 1) in splitters) this[x - 2]!! else 0
-    }
-
-    private fun MutableMap<Int, Int>.numberOfBeamsRight(x: Int, y: Int, beamsInSpot: Int): Int {
-        return beamsInSpot + if (Point(x + 2, y + 1) in splitters) this[x + 2]!! else 0
-    }
-
-
-    fun sendBeam() = (0..bottom).fold(this) { previousManifold, _ ->
-        previousManifold.oneClick()
-    }
-
-    private fun oneClick() =
-        if (lowestBeams.isEmpty()) copy(lowestBeams = setOf(start.stepInDirection(DOWN)))
-        else moveBeams().let { result ->
-            copy(
-                lowestBeams = result.flatMap { it.first }.toSet(),
-                splittersHit = splittersHit + result.sumOf { it.second }
-            )
+    fun sendQuantumBeam() = (0..bottom).fold(createStartQuantumRow to 0) { (row, splittersHit), y ->
+        var newSplittersHit = splittersHit
+        row.forEach { (x, beamsInPoint) ->
+            val isAboveSplitter = Point(x, y + 1) in splitters
+            if (beamsInPoint > 0 && isAboveSplitter) newSplittersHit++
+            if (isAboveSplitter) {
+                row[x - 1] = row.numberOfBeamsNextToSplitter(x, y) { a, b -> a - b }
+                row[x + 1] = row.numberOfBeamsNextToSplitter(x, y) { a, b -> a + b }
+            } else row[x] = beamsInPoint
         }
-
-    private fun moveBeams() = lowestBeams.map { it.moveBeam() }
-
-    private fun Point.moveBeam(): Pair<List<Point>, Int> = stepInDirection(DOWN).let { oneDown ->
-        if (oneDown in splitters) oneDown.splitBeam() to 1
-        else listOf(oneDown) to 0
+        row.removeBeamsUnderSplitter(y) to newSplittersHit
     }
 
-    private fun Point.splitBeam() = listOf(copy(x = x - 1), copy(x = x + 1))
+    private fun MutableMap<Int, Long>.numberOfBeamsNextToSplitter(x: Int, y: Int, calc: (Int, Int) -> Int) =
+        this[x]!! + if (Point(calc(x, 2), y + 2) in splitters) this[calc(x, 2)]!! else this[calc(x, 1)]!!
+
+    private fun MutableMap<Int, Long>.removeBeamsUnderSplitter(y: Int) =
+        splitters.filter { it.y == y + 1 }.forEach { this[it.x] = 0L }.let { this }
 }
 
 private fun String.toManifold() = Manifold(

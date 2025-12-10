@@ -28,20 +28,8 @@ class SolveDay7Test {
     @Test
     fun `actual input part 2`() {
         val input = readFile("day7/input.txt")
-        assertThat(solve2(input)).isEqualTo(40)
+        assertThat(solve2(input)).isEqualTo(29893386035180L) //413655020 too low
     }
-
-    fun Manifold.visualize() =
-        (0..splitters.maxOf { it.x }).joinToString("\n") { y ->
-            (0..splitters.maxOf { it.y }).joinToString("") { x ->
-                when {
-                    Point(x, y) == start -> "S"
-                    Point(x, y) in lowestBeams -> "|"
-                    Point(x, y) in splitters -> "^"
-                    else -> "."
-                }
-            }
-        }.trimIndent()
 
     private fun solve1(input: String) = part1(input)
     private fun solve2(input: String) = part2(input)

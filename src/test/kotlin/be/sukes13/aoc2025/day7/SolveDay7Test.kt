@@ -1,6 +1,5 @@
 package be.sukes13.aoc2025.day7
 
-import be.sukes13.aoc2025.Point
 import be.sukes13.aoc2025.readFile
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

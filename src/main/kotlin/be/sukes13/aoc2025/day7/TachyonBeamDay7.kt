@@ -17,15 +17,15 @@ data class Manifold(
         .toMutableMap()
 
     fun sendQuantumBeam() = (0..bottom).fold(createStartQuantumRow to 0) { (row, splittersHit), y ->
-        var newSplittersHit = splittersHit
+        var allSplittersHit = splittersHit
         row.forEach { (x, beamsInPoint) ->
             if (beamsInPoint > 0 && Point(x, y + 1) in splitters) {
-                newSplittersHit++
+                allSplittersHit++
                 row[x - 1] = row[x]!! + row[x - 1]!!
                 row[x + 1] = row[x]!! + row[x + 1]!!
             } else row[x] = beamsInPoint
         }
-        row.removeBeamsUnderSplitter(y) to newSplittersHit
+        row.removeBeamsUnderSplitter(y) to allSplittersHit
     }
 
     private fun MutableMap<Int, Long>.removeBeamsUnderSplitter(y: Int) =

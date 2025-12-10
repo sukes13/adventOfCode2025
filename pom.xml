@@ -37,10 +37,11 @@
 			<artifactId>kotlin-stdlib</artifactId>
 			<version>${kotlin.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.jetbrains.kotlinx</groupId>
-			<artifactId>kotlinx-coroutines-core-jvm</artifactId>
-			<scope>runtime</scope>
+			<artifactId>kotlinx-coroutines-core</artifactId>
+			<version>1.6.4</version>
 		</dependency>
 		
 		

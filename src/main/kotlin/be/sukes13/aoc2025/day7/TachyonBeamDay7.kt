@@ -19,18 +19,14 @@ data class Manifold(
     fun sendQuantumBeam() = (0..bottom).fold(createStartQuantumRow to 0) { (row, splittersHit), y ->
         var newSplittersHit = splittersHit
         row.forEach { (x, beamsInPoint) ->
-            val isAboveSplitter = Point(x, y + 1) in splitters
-            if (beamsInPoint > 0 && isAboveSplitter) newSplittersHit++
-            if (isAboveSplitter) {
-                row[x - 1] = row.numberOfBeamsNextToSplitter(x, y) { a, b -> a - b }
-                row[x + 1] = row.numberOfBeamsNextToSplitter(x, y) { a, b -> a + b }
+            if (beamsInPoint > 0 && Point(x, y + 1) in splitters) {
+                newSplittersHit++
+                row[x - 1] = row[x]!! + row[x - 1]!!
+                row[x + 1] = row[x]!! + row[x + 1]!!
             } else row[x] = beamsInPoint
         }
         row.removeBeamsUnderSplitter(y) to newSplittersHit
     }
-
-    private fun MutableMap<Int, Long>.numberOfBeamsNextToSplitter(x: Int, y: Int, calc: (Int, Int) -> Int) =
-        this[x]!! + if (Point(calc(x, 2), y + 2) in splitters) this[calc(x, 2)]!! else this[calc(x, 1)]!!
 
     private fun MutableMap<Int, Long>.removeBeamsUnderSplitter(y: Int) =
         splitters.filter { it.y == y + 1 }.forEach { this[it.x] = 0L }.let { this }

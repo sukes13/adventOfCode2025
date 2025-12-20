@@ -15,19 +15,25 @@ class SolveDay9Test {
     @Test
     fun `actual input part 1`() {
         val input = readFile("day9/input.txt")
-        assertThat(solve1(input)).isEqualTo(4777967538L) //too low
+        assertThat(solve1(input)).isEqualTo(4777967538L)
     }
 
     @Test
     fun `example input part 2`() {
         val input = readFile("day9/exampleInput.txt")
-        assertThat(solve2(input)).isEqualTo(0)
+        assertThat(solve2(input)).isEqualTo(24)
     }
 
     @Test
     fun `actual input part 2`() {
         val input = readFile("day9/input.txt")
-        assertThat(solve2(input)).isEqualTo(0)
+        assertThat(solve2(input)).isEqualTo(1439894345L)
+    }
+
+    @Test
+    fun `actual input part 2 2`() {
+        val input = readFile("day9/exampleInput2.txt")
+        assertThat(solve2(input)).isEqualTo(21L)
     }
 
     private fun solve1(input: String) = part1(input)

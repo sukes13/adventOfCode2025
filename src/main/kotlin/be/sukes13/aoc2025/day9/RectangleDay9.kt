@@ -9,30 +9,30 @@ fun part1(input: String) = input.toPoints().toPointPairs().calculateSurface().ma
 fun part2(input: String) = input.toPoints().toValidRectangleRanges().calculateSurface().max()
 
 private fun List<Point>.toValidRectangleRanges(): List<Pair<Point, Point>> {
-    val validTiles = (this + first()).windowed(2, 1) { (p1, p2) ->
-        p1.connectRedTiles(p2)
+    val validRows = validRows()
+    return toPointPairs().filter { (p1, p2) ->
+        toRange(p1.y, p2.y)
+            .map { p1.inRow(validRows[it]!!) && p2.inRow(validRows[it]!!) }
+            .all { it }
+    }
+}
+
+private fun List<Point>.validRows() =
+    (this + first()).windowed(2, 1) { (p1, p2) ->
+        connectRedTiles(p1, p2)
     }.flatten().distinct()
         .groupBy({ it.first }, { it.second })
         .mapValues { (_, list) -> list.sorted() }
         .mapValues { (_, list) -> list.first()..list.last() }
-    return toSurfacesRanges(validTiles)
-}
 
-private fun List<Point>.toSurfacesRanges(validTiles: Map<Int, IntRange>) =
-    toPointPairs().filter { (p1, p2) ->
-        toRange(p1.y, p2.y)
-            .map { p1.inRow(validTiles[it]!!) && p2.inRow(validTiles[it]!!) }
-            .all { it }
-    }
+private fun connectRedTiles(p1: Point, p2: Point) =
+    if (p1.y == p2.y) toRange(p1.x, p2.x).map { p1.y to it }
+    else toRange(p1.y, p2.y).map { it to p1.x }
 
 private fun toRange(p1: Int, p2: Int) =
     if (p1 < p2) (p1..p2) else (p1 downTo p2)
 
 private fun Point.inRow(row: IntRange) = x >= row.first && x <= row.last
-
-private fun Point.connectRedTiles(p2: Point) =
-    if (y == p2.y) toRange(x, p2.x).map { y to it }
-    else toRange(y, p2.y).map { it to x }
 
 private fun List<Pair<Point, Point>>.calculateSurface() =
     map { (p1, p2) ->

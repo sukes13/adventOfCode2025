@@ -31,7 +31,7 @@ class SolveDay9Test {
     }
 
     @Test
-    fun `actual input part 2 2`() {
+    fun `example input part 2 2`() {
         val input = readFile("day9/exampleInput2.txt")
         assertThat(solve2(input)).isEqualTo(21L)
     }
